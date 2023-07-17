@@ -9,14 +9,26 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.example.demo.repository.modelo.CuentaBancaria;
 import com.example.demo.repository.modelo.Habitacion;
 import com.example.demo.repository.modelo.Hotel;
+import com.example.demo.repository.modelo.Transferencia;
+import com.example.demo.repository.modelo.Propietario;
+import com.example.demo.service.ICuentaBancariaService;
 import com.example.demo.service.IHotelService;
+import com.example.demo.service.IPropietarioService;
+import com.example.demo.service.ITransferenciaService;
 
 @SpringBootApplication
 public class PwU3P4TJaApplication implements CommandLineRunner {
+
 	@Autowired
-	private IHotelService hotelService;
+	private IPropietarioService propietarioService;
+
+	@Autowired
+	private ITransferenciaService transferenciaService;
+	@Autowired
+	private ICuentaBancariaService cuentaBancariaService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(PwU3P4TJaApplication.class, args);
@@ -24,52 +36,67 @@ public class PwU3P4TJaApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		// creacion de propietarios
+		Propietario p = new Propietario();
+		p.setNombre("Emiliano");
+		p.setApellido("Chispe");
+		p.setCedula("1713175071");
 
-		/*
-		 * Hotel hot = new Hotel();
-		 * 
-		 * hot.
-		 * setDireccion("101-0021 Prefectura de Tokio, Chiyoda-ku, Sotokanda 3-10-11, Japón"
-		 * ); hot.setNombre("NOHGA HOTEL AKIHABARA TOKYO");
-		 * 
-		 * Habitacion habi = new Habitacion(); habi.setNumero("69"); habi.setValor(new
-		 * BigDecimal(101)); habi.setHotel(hot); Habitacion habi1 = new Habitacion();
-		 * habi1.setNumero("13"); habi1.setValor(new BigDecimal(43));
-		 * habi1.setHotel(hot);
-		 * 
-		 * Habitacion habi2 = new Habitacion(); habi2.setNumero("16");
-		 * habi2.setValor(new BigDecimal(46)); habi2.setHotel(hot);
-		 * 
-		 * List<Habitacion> habitaciones = new ArrayList<Habitacion>();
-		 * 
-		 * habitaciones.add(habi); //habitaciones.add(habi1); //habitaciones.add(habi2);
-		 * 
-		 * hot.setHabitaciones(habitaciones);
-		 * 
-		 * this.hotelService.guardar(hot);
-		 */
+		Propietario p1 = new Propietario();
+		p1.setNombre("Maria Jose");
+		p1.setApellido("Ontamilano");
+		p1.setCedula("1713832071");
 
-		/*List<Hotel> listaHotel = this.hotelService.buscarWhereJoin();
+		Propietario p2 = new Propietario();
+		p2.setNombre("Marcelo");
+		p2.setApellido("Gozo");
+		p2.setCedula("17324567765");
 
-		for (Hotel h : listaHotel) {
-			if (h == null) {
-				System.out.println("No existe este hotel aun");
+		// creacion de cuentas bancarias
+		CuentaBancaria cta = new CuentaBancaria();
+		cta.setNumero("98432");
+		cta.setSaldo(new BigDecimal(338));
+		cta.setTipo("A");
+		cta.setPropietario(p2);
 
-			} else {
-				System.out.println(h.getId() +" Direccion: "+ h.getDireccion()+" ,Nombre: "+h.getNombre());
-			}
-		}*/
+		CuentaBancaria cta1 = new CuentaBancaria();
+		cta1.setNumero("16257");
+		cta1.setSaldo(new BigDecimal(11298));
+		cta1.setTipo("C");
+		cta1.setPropietario(p1);
+
+		CuentaBancaria cta2 = new CuentaBancaria();
+		cta2.setNumero("09253");
+		cta2.setSaldo(new BigDecimal(869));
+		cta2.setTipo("A");
+		cta2.setPropietario(p2);
+
+		// Agregamos a que tipo de cuenta es
+		List<CuentaBancaria> listaCuentaAhorros = new ArrayList<>();
+		List<CuentaBancaria> listaCuentaCorriente = new ArrayList<>();
+		listaCuentaAhorros.add(cta);
+		listaCuentaAhorros.add(cta2);
 		
-	List<Habitacion> listahabiHabitaciones= this.hotelService.buscarHabitacionesInnerJoin();
+		listaCuentaCorriente.add(cta1);
+		p1.setCuentaBancaria(listaCuentaCorriente);
+		p2.setCuentaBancaria(listaCuentaAhorros);
+		//Guardamos las cuentas bancarias
+		//this.propietarioService.guardar(p1);
+		//this.propietarioService.guardar(p2);
 
-		for (Habitacion ha : listahabiHabitaciones) {
-			if (ha == null) {
-				System.out.println("No existe esta habitacion aun");
+		//this.transferenciaService.guardarTransferencia(5, 7, new BigDecimal(130));
+		//System.out.println(this.cuentaBancariaService.buscar(5).getSaldo());
 
-			} else {
-				System.out.println( ha.getValor());
-			}
-		}
+		
+		  List<Transferencia> transferencia =this.transferenciaService.reporteCta();
+		  
+		  for (Transferencia t :transferencia) { System.out.println(
+		  "\nTransferencia ID: "+t.getId() +" \nMonton:"+t.getMonton()
+		  +" \nFecha: "+t.getFecha() );
+		  
+		  }
+		 
+
 	}
 
 }

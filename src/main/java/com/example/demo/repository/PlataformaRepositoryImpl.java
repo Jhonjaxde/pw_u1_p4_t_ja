@@ -19,7 +19,7 @@ public class PlataformaRepositoryImpl implements IPlataformaRepository{
 	@Override
 	public List<Plataforma> seleccionarInnerJoin() {
 		TypedQuery<Plataforma> myQuery =
-                this.entityManager.createQuery("SELECT pla from Plataforma pla INNER JOIN pla.videjuegos vi",Plataforma.class);
+                this.entityManager.createQuery("SELECT pla FROM Plataforma pla INNER JOIN pla.videjuegos vi ON pla.plat_id = vi.plataformas",Plataforma.class);
         return myQuery.getResultList();
 	}
 
