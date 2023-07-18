@@ -1,8 +1,11 @@
 package com.example.demo;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -10,25 +13,31 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.example.demo.repository.modelo.CuentaBancaria;
+import com.example.demo.repository.modelo.Estudiante;
 import com.example.demo.repository.modelo.Habitacion;
 import com.example.demo.repository.modelo.Hotel;
+import com.example.demo.repository.modelo.Materia;
+import com.example.demo.repository.modelo.Matricula;
 import com.example.demo.repository.modelo.Transferencia;
 import com.example.demo.repository.modelo.Propietario;
+import com.example.demo.repository.modelo.Provincia;
+import com.example.demo.repository.modelo.Semestre;
 import com.example.demo.service.ICuentaBancariaService;
+import com.example.demo.service.IEstudianteService;
 import com.example.demo.service.IHotelService;
+import com.example.demo.service.IMateriaService;
+import com.example.demo.service.IMatriculaService;
 import com.example.demo.service.IPropietarioService;
 import com.example.demo.service.ITransferenciaService;
 
 @SpringBootApplication
 public class PwU3P4TJaApplication implements CommandLineRunner {
-
 	@Autowired
-	private IPropietarioService propietarioService;
-
+	private IEstudianteService estudianteService;
 	@Autowired
-	private ITransferenciaService transferenciaService;
+	private IMatriculaService matriculaService;
 	@Autowired
-	private ICuentaBancariaService cuentaBancariaService;
+	private IMateriaService materiaService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(PwU3P4TJaApplication.class, args);
@@ -36,66 +45,79 @@ public class PwU3P4TJaApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		// creacion de propietarios
-		Propietario p = new Propietario();
-		p.setNombre("Emiliano");
-		p.setApellido("Chispe");
-		p.setCedula("1713175071");
+		// creacion de provincias
 
-		Propietario p1 = new Propietario();
-		p1.setNombre("Maria Jose");
-		p1.setApellido("Ontamilano");
-		p1.setCedula("1713832071");
+		Provincia pro = new Provincia();
+		pro.setNombre("manabi");
+		pro.setCanton("Portoviejo");
+		pro.setNumeroProvincia("13");
 
-		Propietario p2 = new Propietario();
-		p2.setNombre("Marcelo");
-		p2.setApellido("Gozo");
-		p2.setCedula("17324567765");
+		// creacion de estudiante
 
-		// creacion de cuentas bancarias
-		CuentaBancaria cta = new CuentaBancaria();
-		cta.setNumero("98432");
-		cta.setSaldo(new BigDecimal(338));
-		cta.setTipo("A");
-		cta.setPropietario(p2);
+		Estudiante estu = new Estudiante();
+		estu.setCedula("1723456890");
+		estu.setNombre("Emiliano");
+		estu.setTelefono("0987654321");
+		List<Estudiante> listaEstudiantes = new ArrayList<>();
+		listaEstudiantes.add(estu);
 
-		CuentaBancaria cta1 = new CuentaBancaria();
-		cta1.setNumero("16257");
-		cta1.setSaldo(new BigDecimal(11298));
-		cta1.setTipo("C");
-		cta1.setPropietario(p1);
+		// creacion de semestre
 
-		CuentaBancaria cta2 = new CuentaBancaria();
-		cta2.setNumero("09253");
-		cta2.setSaldo(new BigDecimal(869));
-		cta2.setTipo("A");
-		cta2.setPropietario(p2);
+		Semestre se = new Semestre();
+		se.setFecha(LocalDateTime.now());
+		se.setCosto(new BigDecimal(302));
+		se.setPeriodo("2023");
 
-		// Agregamos a que tipo de cuenta es
-		List<CuentaBancaria> listaCuentaAhorros = new ArrayList<>();
-		List<CuentaBancaria> listaCuentaCorriente = new ArrayList<>();
-		listaCuentaAhorros.add(cta);
-		listaCuentaAhorros.add(cta2);
+		// creacion de materia
+
+		Materia ma = new Materia();
+		ma.setCodigo("178");
+		ma.setNombre("programacion");
+		ma.setCurso("R8");
+
+		List<Materia> listaMaterias = new ArrayList<>();
+		listaMaterias.add(ma);
 		
-		listaCuentaCorriente.add(cta1);
-		p1.setCuentaBancaria(listaCuentaCorriente);
-		p2.setCuentaBancaria(listaCuentaAhorros);
-		//Guardamos las cuentas bancarias
-		//this.propietarioService.guardar(p1);
-		//this.propietarioService.guardar(p2);
+		Set<Materia> listaMaterias2 = new HashSet<>();
+		listaMaterias2.add(ma);
+		// creacion de matricula
 
-		//this.transferenciaService.guardarTransferencia(5, 7, new BigDecimal(130));
-		//System.out.println(this.cuentaBancariaService.buscar(5).getSaldo());
-
+		Matricula matri = new Matricula();
+		matri.setFecha(LocalDateTime.now());
+		matri.setInstitucion("COTAESG");
+		matri.setNumero("8796");
 		
-		  List<Transferencia> transferencia =this.transferenciaService.reporteCta();
-		  
-		  for (Transferencia t :transferencia) { System.out.println(
-		  "\nTransferencia ID: "+t.getId() +" \nMonton:"+t.getMonton()
-		  +" \nFecha: "+t.getFecha() );
-		  
-		  }
-		 
+		List<Matricula> listaMatricula = new ArrayList<>();
+		listaMatricula.add(matri);
+		
+		Set<Matricula> listMatriculas2 = new HashSet<>();
+		listMatriculas2.add(matri);
+		
+		// union de tablas
+		pro.setEstudiantes(listaEstudiantes);
+		estu.setProvincia(pro);
+		
+		se.setMaterias(listaMaterias);
+		ma.setSemestre(se);
+		
+		estu.setMatriculas(listaMatricula);
+		matri.setEstudiante(estu);
+		
+		ma.setMatriculas(listMatriculas2);
+		matri.setMaterias(listaMaterias2);
+		
+		//ma.setMatriculas(listaMatricula);
+		//matri.setMateria(ma);
+		
+		//this.matriculaService.guardar(matri);
+
+		/*
+		 * List<Hotel> listaHotel = this.hotelService.buscarWhereJoin(); for (Hotel h :
+		 * listaHotel) { if (h == null) {
+		 * System.out.println("No existe este hotel aun"); } else {
+		 * System.out.println(h.getId() +" Direccion: "+
+		 * h.getDireccion()+" ,Nombre: "+h.getNombre()); } }
+		 */
 
 	}
 
