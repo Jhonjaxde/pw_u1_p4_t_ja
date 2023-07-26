@@ -68,7 +68,7 @@ public class TransferenciaServiceImpl implements ITransferenciaService {
 	 * }
 	 */
 	@Override
-	@Transactional(value = TxType.REQUIRES_NEW)
+	@Transactional(value =TxType.MANDATORY)
 	public void guardarTransferencia(String ctaIdOrigen,String ctaIdDestino,BigDecimal monto) {
 		CuentaBancaria COrigen =this.bancariaService.buscarPorNumero(ctaIdOrigen);
 		CuentaBancaria CDestino =this.bancariaService.buscarPorNumero(ctaIdDestino);
@@ -97,6 +97,7 @@ public class TransferenciaServiceImpl implements ITransferenciaService {
 	}	}
 
 	@Override
+	@Transactional(value =TxType.MANDATORY)
 	public void guardar(Transferencia transferencia) {
 		// TODO Auto-generated method stub
 		this.transferenciaRepository.insertar(transferencia);
@@ -104,6 +105,7 @@ public class TransferenciaServiceImpl implements ITransferenciaService {
 	}
 
 	@Override
+	@Transactional(value =TxType.MANDATORY)
 	public List<Transferencia> reporteCta() {
 		// TODO Auto-generated method stub
 		return this.transferenciaRepository.seleccionarCta();
