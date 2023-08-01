@@ -48,6 +48,42 @@ public class MetodosReferenciados {
 			return pesoPeligroso;
 		}
 
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		public String juego(Integer arg) {
+			if(arg.equals(7)) {
+				return "ganador";
+			}else {
+				return "perdedor";
+			}
+			
+		};
+		
+		
+		
+		
+		
+		
+		public Double aplicarIva(Double arg) {
+			Double precioIva = arg*1.12;
+			return precioIva;
+		}
 
 	
 	
