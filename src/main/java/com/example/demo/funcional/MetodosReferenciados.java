@@ -52,6 +52,11 @@ public class MetodosReferenciados {
 		return numero > 3;
 	
 	};
+	public boolean compararString(String ele) {
+		return ele.equals("ala");
+		
+	
+	};
 	public boolean comparar(Integer numero) {
 		return numero ==1;	};
 	//consumer
@@ -67,6 +72,7 @@ public class MetodosReferenciados {
 		LOG.info("" + arg);
 
 	};
+	
 	//function
 	
 	public Integer man(String arg) {
@@ -76,6 +82,11 @@ public class MetodosReferenciados {
 		}else {
 		return 0;
 		}
+	}
+	public String unir(Integer arg) {
+		return arg + "sss";
+		
+		
 	}
 	
 	//unary operator
@@ -87,5 +98,10 @@ public class MetodosReferenciados {
 public Double iva(Double arg) {
 		
 		return arg*1.12;
+	};
+	
+public Integer resta(Integer arg) {
+		
+		return arg-aleatorio.nextInt(1,10);
 	};
 }
